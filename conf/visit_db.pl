@@ -1,4 +1,4 @@
-package config;
+
 use strict;
 use warnings FATAL => 'all';
 use DBI;
@@ -35,13 +35,12 @@ $dbh->disconnect();
 my $host = "localhost";         # 主机地址
 my $driver = "Pg";           # 接口类型 默认为 localhost
 my $database = "mydb";        # 数据库
-# 驱动程序对象的句柄
-my $dsn = "DBI:$driver:database=$database:$host";  
+# 驱动程序对象的句柄 
 my $userid = "postgres";            # 数据库用户名
 my $password = "like888***";        # 数据库密码
  
 # 连接数据库
-my $dbh = DBI->connect($dsn, $userid, $password ) or die $DBI::errstr;
+my $dbh = DBI->connect("DBI:$driver:dbname=$database;host=$host", $userid, $password ) or die $DBI::errstr;
 my $sth = $dbh->prepare("SELECT * FROM vm1");   # 预处理 SQL  语句
 $sth->execute();    # 执行 SQL 操作
  
@@ -51,17 +50,20 @@ $sth->execute();    # 执行 SQL 操作
 #                        FROM Websites
 #                        WHERE alexa > ?");
 # $sth->execute( $alexa ) or die $DBI::errstr;
- 
+
 # 循环输出所有数据
-while ( my @row = $sth->fetchrow_array() )
-{
-       print join('\t', @row)."\n";
+# while ( my @row = $sth->fetchrow_array() )
+# {
+#        print join('\t', @row)."\n";
+# }
+
+print "*********************\n";
+while (my @row = $sth->fetchrow_array()){
+	print "@row\n";
 }
- 
+print "operation  done successfully\n";
+
 $sth->finish();
 $dbh->disconnect();
 
 
-
-
-1;

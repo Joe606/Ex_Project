@@ -1,30 +1,35 @@
-package Ex_Project::Models::Db;
+package Db;
 
 use strict;
 use warnings;
 
 use DBI;
+use Exporter 'import';
+our @EXPORT = qw(conn $dbh);
+
 
 sub new{
-	my ($class) = shift;
+	my $proto = shift;
+	my($class) = ref($proto) || $proto;
 	my $self = {
 		id => shift,
 		name => shift,
 		memeory => shift,
 	};
-
+	print "this is a tag: $class\n";
 	bless($self, $class);
 	return $self;
 }
 
+#link to local postgresql
 sub conn{
 
-
+	my($self) = shift;
 	my $host = "localhost";         # 主机地址
 	my $driver = "Pg";           # 接口类型 默认为 localhost
 	my $database = "mydb";        # 数据库
 	# 驱动程序对象的句柄
-	my $dsn = "DBI:$driver:database=$database:$host";  
+	my $dsn = "DBI:$driver:database=$database;host=$host";  
 	my $userid = "postgres";            # 数据库用户名
 	my $password = "like888***";        # 数据库密码
 	 
@@ -32,14 +37,14 @@ sub conn{
 	our $dbh = DBI->connect($dsn, $userid, $password ) or die $DBI::errstr;
 
 	#show data you need
-	# my $sth = $dbh->prepare("SELECT * FROM vm1");   # 预处理 SQL  语句
-	# $sth->execute();    # 执行 SQL 操作
+	my $sth = $dbh->prepare("SELECT * FROM vm1");   # 预处理 SQL  语句
+	$sth->execute();    # 执行 SQL 操作
 	 
-	# # 循环输出所有数据
-	# while ( my @row = $sth->fetchrow_array() )
-	# {
-	#        print join('\t', @row)."\n";
-	# }
+	# 循环输出所有数据
+	while ( my @row = $sth->fetchrow_array() )
+	{
+	       print join('\t', @row)."\n";
+	}
 
 	# $sth->finish();
 	# $dbh->disconnect();

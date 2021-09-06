@@ -36,7 +36,7 @@ my $host = "localhost";         # 主机地址
 my $driver = "Pg";           # 接口类型 默认为 localhost
 my $database = "mydb";        # 数据库
 # 驱动程序对象的句柄
-my $dsn = "DBI:$driver:database=$database:$host";  
+my $dsn = "DBI:$driver:database=$database;host=$host";  
 my $userid = "postgres";            # 数据库用户名
 my $password = "like888***";        # 数据库密码
  
@@ -57,7 +57,11 @@ while ( my @row = $sth->fetchrow_array() )
 {
        print join('\t', @row)."\n";
 }
- 
+
+my $type_info = $dbh->type_info_all;
+print "@$type_info\n";
+
+
 $sth->finish();
 $dbh->disconnect();
 

@@ -7,4 +7,6 @@ create table sto1(id int primary key not null, name char(10) not null, storage i
 # \d
 # \d vm1
 insert into vm1(id, name, memory) values(1, 'no_a', 16);
+insert into sto(id,name,storage) values(1,'so_a',1000);
+
 # select * from vm1;
